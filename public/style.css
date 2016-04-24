@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: helvetica, arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+h1 {
+  background-color: teal;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 2px 5px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.username{
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-right: 7px;
+    margin-left: 5px;
+}
+
+.username::after{
+  content: ':'
+}
+
+.message{
+
+}
+
+.messageForm{
+  position: fixed;
+  bottom: 0;
+  margin: 5px;
+  padding: 0;
+  left: 0;
+  right: 0;
+}
+
+.messageForm input {
+  width: 100%;
+  font-size: 16px;
+}
+
+.my-message {
+  background-color: rgba(0, 0, 0, 0.05);
+}

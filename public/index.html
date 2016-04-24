@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <title>Fuck YeaH!</title>
+
+  </head>
+
+  <body>
+
+    <h1>SockIt!</h1>
+
+    <ul id="messages">
+    </ul>
+
+    <form id="messageForm" class="messageForm" autocomplete="off">
+        <input id="textInput" type="text" autofocus>
+    </form>
+
+    <script>
+
+      var userName = localStorage.getItem('userName')
+      if (!userName){
+        userName = prompt("Who are you?")
+        localStorage.setItem('userName', userName)
+      }
+
+      var host = window.document.location.host.replace(/:.*/,'')
+      var ws = new WebSocket('ws://' + host + ':8002')
+
+      var messages = document.querySelector('#messages')
+      var messageForm = document.querySelector('#messageForm')
+      var textInput  = document.querySelector('#textInput')
+
+      messageForm.addEventListener('submit', function(e){
+
+        e.preventDefault()
+
+        if (textInput.value){
+
+          addMessageElem(userName, textInput.value, true)
+
+          ws.send(JSON.stringify({
+            text: textInput.value,
+            user: userName
+          }))
+          textInput.value = ''
+          textInput.blur()
+          textInput.focus()
+        }
+
+      })
+
+      ws.addEventListener('message', function(event){
+
+        var newMessage = JSON.parse(event.data)
+        addMessageElem(newMessage.user, newMessage.text, false)
+
+      })
+
+      function addMessageElem(name, message, isMe){
+
+        var newMessageElem = document.createElement('li')
+        var nameSpan = document.createElement('span')
+        var messageSpan = document.createElement('span')
+
+        nameSpan.innerHTML = name
+        messageSpan.innerHTML = message
+
+        nameSpan.classList.add('username')
+        messageSpan.classList.add('message')
+
+        if (isMe){
+          newMessageElem.classList.add('my-message')
+        }
+
+        newMessageElem.appendChild(nameSpan)
+        newMessageElem.appendChild(messageSpan)
+        messages.appendChild(newMessageElem)
+
+      }
+
+    </script>
+
+  </body>
+
+</html>
